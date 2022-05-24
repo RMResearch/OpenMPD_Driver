@@ -11,7 +11,7 @@ For instance, our multi-rate runtime cycle allows us to combine very high comput
 [Libs](https://github.com/RobertoMontano/OpenMPD_Libs)
 
 ## OpenMPD Solver
-[Driver](https://github.com/RobertoMontano/OpenMPD_Solvers)
+[Solver](https://github.com/RobertoMontano/OpenMPD_Solvers)
 
 ## OpenMPD Installation Guide
 [Setup](https://github.com/RobertoMontano/OpenMPD/blob/main/Docs/OpenMPD_FrameworkSetup.pdf)
