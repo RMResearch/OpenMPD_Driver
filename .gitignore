@@ -6,6 +6,9 @@ x64/
 Debug/
 .vs/
 *.suo
+*.pdb
+*.idb
+*.bak
  
 # ============ #
 # OS generated #
