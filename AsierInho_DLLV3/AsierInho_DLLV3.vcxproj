@@ -49,7 +49,7 @@
       <ProgramDataBaseFileName>$(ProjectDir)$(ProjectName)\vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(LIBS_HOME)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(LIBS_HOME)\libx64;$(LIBS_HOME)\include\fftw335_64</AdditionalLibraryDirectories>
       <AdditionalDependencies>pthreadVC2.lib;ftd2xx.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
