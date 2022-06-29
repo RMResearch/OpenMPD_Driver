@@ -53,11 +53,11 @@
       <AdditionalDependencies>pthreadVC2.lib;ftd2xx.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>  XCOPY /F /Y  $(SolutionDir)$(Platform)\$(ProjectName).dll  $(LIBS_HOME)\bin\$(Platform)\
-  XCOPY /F /Y  $(SolutionDir)$(Platform)\$(ProjectName).lib  $(LIBS_HOME)\lib\$(ProjectName)\
-  XCOPY /F /Y  $(ProjectDir)include\AsierInho_V2.h  $(LIBS_HOME)\include\$(ProjectName)\
- XCOPY /F /Y  $(ProjectDir)include\AsierInho_V2_CWrapper.h  $(LIBS_HOME)\include\$(ProjectName)\
-  XCOPY /F /Y  $(ProjectDir)include\AsierInho_V2_Prerequisites.h  $(LIBS_HOME)\include\$(ProjectName)\</Command>
+      <Command>XCOPY /F /Y  "$(SolutionDir)$(Platform)\$(ProjectName).dll"  "$(LIBS_HOME)\bin\$(Platform)\"
+XCOPY /F /Y  "$(SolutionDir)$(Platform)\$(ProjectName).lib"  "$(LIBS_HOME)\lib\$(ProjectName)\"
+XCOPY /F /Y  "$(ProjectDir)include\AsierInho_V2.h"  "$(LIBS_HOME)\include\$(ProjectName)\"
+XCOPY /F /Y  "$(ProjectDir)include\AsierInho_V2_CWrapper.h"  "$(LIBS_HOME)\include\$(ProjectName)\"
+XCOPY /F /Y  "$(ProjectDir)include\AsierInho_V2_Prerequisites.h"  "$(LIBS_HOME)\include\$(ProjectName)\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
