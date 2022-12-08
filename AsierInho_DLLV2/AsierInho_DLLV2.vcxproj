@@ -10,14 +10,14 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{AA1F4D85-46A4-4426-801E-21840AD7D4A4}</ProjectGuid>
     <RootNamespace>AsierInho_DLL</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <ProjectName>AsierInho_V2</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -54,6 +54,7 @@
     </Link>
     <PostBuildEvent>
       <Command>  XCOPY /F /Y  $(SolutionDir)$(Platform)\$(ProjectName).dll  $(LIBS_HOME)\bin\$(Platform)\
+  XCOPY /F /Y  $(SolutionDir)$(Platform)\$(ProjectName).pdb  $(LIBS_HOME)\bin\$(Platform)\
   XCOPY /F /Y  $(SolutionDir)$(Platform)\$(ProjectName).lib  $(LIBS_HOME)\lib\$(ProjectName)\
   XCOPY /F /Y  $(ProjectDir)include\AsierInho_V2.h  $(LIBS_HOME)\include\$(ProjectName)\
  XCOPY /F /Y  $(ProjectDir)include\AsierInho_V2_CWrapper.h  $(LIBS_HOME)\include\$(ProjectName)\

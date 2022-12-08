@@ -29,7 +29,7 @@ void main(void) {
 	//Create handler and connect to it
 	AsierInho::RegisterPrintFuncs(print, print, print);
 	AsierInho::AsierInhoBoard* driver = AsierInho::createAsierInho();
-	if(!driver->connect(AsierInho::BensDesign, 32, 30))
+	if(!driver->connect(AsierInho::BensDesign, 18, 7))
 		printf("Failed to connect to board.");
 
 	float t_positions[512 * 3], amplitudeAdjust[512];
