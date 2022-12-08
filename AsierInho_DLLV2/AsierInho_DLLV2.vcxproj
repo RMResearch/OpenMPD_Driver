@@ -10,7 +10,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{AA1F4D85-46A4-4426-801E-21840AD7D4A4}</ProjectGuid>
     <RootNamespace>AsierInho_DLL</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
     <ProjectName>AsierInho_V2</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -49,16 +49,15 @@
       <ProgramDataBaseFileName>$(ProjectDir)$(ProjectName)\vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(LIBS_HOME)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(LIBS_HOME)\lib;$(LIBS_HOME)\include\fftw335_64</AdditionalLibraryDirectories>
       <AdditionalDependencies>pthreadVC2.lib;ftd2xx.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>  XCOPY /F /Y  $(SolutionDir)$(Platform)\$(ProjectName).dll  $(LIBS_HOME)\bin\$(Platform)\
-  XCOPY /F /Y  $(SolutionDir)$(Platform)\$(ProjectName).pdb  $(LIBS_HOME)\bin\$(Platform)\
-  XCOPY /F /Y  $(SolutionDir)$(Platform)\$(ProjectName).lib  $(LIBS_HOME)\lib\$(ProjectName)\
-  XCOPY /F /Y  $(ProjectDir)include\AsierInho_V2.h  $(LIBS_HOME)\include\$(ProjectName)\
- XCOPY /F /Y  $(ProjectDir)include\AsierInho_V2_CWrapper.h  $(LIBS_HOME)\include\$(ProjectName)\
-  XCOPY /F /Y  $(ProjectDir)include\AsierInho_V2_Prerequisites.h  $(LIBS_HOME)\include\$(ProjectName)\</Command>
+      <Command>XCOPY /F /Y  "$(SolutionDir)$(Platform)\$(ProjectName).dll"  "$(LIBS_HOME)\bin\$(Platform)\"
+XCOPY /F /Y  "$(SolutionDir)$(Platform)\$(ProjectName).lib"  "$(LIBS_HOME)\lib\$(ProjectName)\"
+XCOPY /F /Y  "$(ProjectDir)include\AsierInho_V2.h"  "$(LIBS_HOME)\include\$(ProjectName)\"
+XCOPY /F /Y  "$(ProjectDir)include\AsierInho_V2_CWrapper.h"  "$(LIBS_HOME)\include\$(ProjectName)\"
+XCOPY /F /Y  "$(ProjectDir)include\AsierInho_V2_Prerequisites.h"  "$(LIBS_HOME)\include\$(ProjectName)\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
