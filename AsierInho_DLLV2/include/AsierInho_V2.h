@@ -49,7 +49,7 @@ namespace AsierInho_V2 {
 			This method allows you to read the information required by GS_PAT to compute solutions, and create the messages to send to the board.			
 			
 		*/
-		virtual void readParameters(float* transducerPositions, int* transducerIds, int* phaseAdjust, float* amplitudeAdjust, int* numDiscreteLevels)=0;
+		virtual void readParameters(float* transducerPositions, float* transducerNormals, int* transducerIds, int* phaseAdjust, float* amplitudeAdjust, int* numDiscreteLevels)=0;
 		virtual size_t totalTransducers() = 0;
 		virtual size_t totalBoards() = 0;
 		virtual void numTransducersPerBoard(size_t* out_TransPerBoard) = 0;

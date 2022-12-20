@@ -14,7 +14,7 @@ extern "C" {
 		_AsierInho_Export_V2 AsierInho_V2_Handler AsierInho_CWrapper_createHandler();
 		_AsierInho_Export_V2 void AsierInho_CWrapper_destroyHandler(AsierInho_V2_Handler h);
 		//_AsierInho_Export_V2 void AsierInho_CWrapper_readAdjustments(AsierInho_V2_Handler h, int* transducerIds, int* phaseAdjust);
-		_AsierInho_Export_V2 void AsierInho_CWrapper_readParameters(AsierInho_V2_Handler h, float* transducerPositions, int* transducerIds, int* phaseAdjust, float* amplitudeAdjust, int* numDiscreteLevels);
+		_AsierInho_Export_V2 void AsierInho_CWrapper_readParameters(AsierInho_V2_Handler h, float* transducerPositions, float* transducerNormals, int* transducerIds, int* phaseAdjust, float* amplitudeAdjust, int* numDiscreteLevels);
 		_AsierInho_Export_V2 size_t AsierInho_CWrapper_totalTransducers(AsierInho_V2_Handler h);
 		_AsierInho_Export_V2 size_t AsierInho_CWrapper_totalBoards(AsierInho_V2_Handler h);
 		_AsierInho_Export_V2 void AsierInho_CWrapper_numTransducersPerBoard(AsierInho_V2_Handler h, size_t* out_TransPerBoard);

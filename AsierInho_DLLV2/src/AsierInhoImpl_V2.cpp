@@ -103,6 +103,7 @@ bool AsierInhoImpl_V2::connect(int numBoards, int * boardIDs, float* matToWorld 
 	//1. Create resources for worker threads: 
 	dataStream = new unsigned char[messageSize*numBoards*maxNumMessagesToSend];
 	transducerPositions = new float[256 * 3 * numBoards];
+	transducerNormals = new float[256 * 3 * numBoards];
 	amplitudeAdjust= new float[256 * numBoards];
 	phaseAdjust = new int[256 * numBoards];
 	transducerIds = new int [256*numBoards];
@@ -117,7 +118,7 @@ bool AsierInhoImpl_V2::connect(int numBoards, int * boardIDs, float* matToWorld 
 		this->boardIDs.push_back(boardIDs[b]);	
 		boardWorkerData.push_back(new struct worker_threadData);
 		boardWorkerData[b]->dataStream = &(dataStream[b*messageSize*maxNumMessagesToSend]);
-		readBoardParameters(boardIDs[b], &(matToWorld[16*b]), &(transducerPositions[3*256*b]), &(transducerIds[256*b]), &(phaseAdjust[256*b]), &(amplitudeAdjust[256*b]), &numDiscreteLevels[b], (boardWorkerData[b]));
+		readBoardParameters(boardIDs[b], &(matToWorld[16*b]), &(transducerPositions[3*256*b]), &(transducerNormals[3 * 256 * b]), &(transducerIds[256*b]), &(phaseAdjust[256*b]), &(amplitudeAdjust[256*b]), &numDiscreteLevels[b], (boardWorkerData[b]));
 		if (numDiscreteLevels[b] < this->numDiscreteLevels)
 			this->numDiscreteLevels = numDiscreteLevels[b];
 #ifdef _TIME_PROFILING		//DEBUG: Add time profiling fields:
@@ -170,9 +171,10 @@ bool AsierInhoImpl_V2::connect(int numBoards, int * boardIDs, float* matToWorld 
 	return false;
 }
 
-void AsierInhoImpl_V2::readParameters(float * transducerPositions, int * transducerIds, int * phaseAdjust, float * amplitudeAdjust, int * numDiscreteLevels)
+void AsierInhoImpl_V2::readParameters(float * transducerPositions, float* transducerNormals, int * transducerIds, int * phaseAdjust, float * amplitudeAdjust, int * numDiscreteLevels)
 {
-	memcpy(transducerPositions, this->transducerPositions, 256*numBoards*3*sizeof(float));
+	memcpy(transducerPositions, this->transducerPositions, 256 * numBoards * 3 * sizeof(float));
+	memcpy(transducerNormals, this->transducerNormals, 256 * numBoards * 3 * sizeof(float));
 	memcpy(transducerIds , this->transducerIds, 256*numBoards*sizeof(int));
 	memcpy(phaseAdjust , this->phaseAdjust, 256*numBoards*sizeof(int));
 	memcpy(amplitudeAdjust , this->amplitudeAdjust, 256*numBoards*sizeof(float));
@@ -188,14 +190,14 @@ void AsierInhoImpl_V2::updateBoardPositions(float * matBoardToWorld4x4)
 	//Update configuration (we simlpy re-read the config file, applying the new matrix).
 	int aux;//we do not need to reload the numDiscreteLevels... we will store it here and ignore this return value
 	for (int b = 0; b < numBoards; b++) 
-		readBoardParameters(boardIDs[b], &(matBoardToWorld4x4[16*b]), &(transducerPositions[3*256*b]), &(transducerIds[256*b]), &(phaseAdjust[256*b]), &(amplitudeAdjust[256*b]), &aux, (boardWorkerData[b]));	
+		readBoardParameters(boardIDs[b], &(matBoardToWorld4x4[16*b]), &(transducerPositions[3*256*b]), &(transducerNormals[3*256*b]), &(transducerIds[256 * b]), &(phaseAdjust[256 * b]), &(amplitudeAdjust[256 * b]), &aux, (boardWorkerData[b]));
 	//Unlock worker threads
 	if(status==CONNECTED)
 		for (int b = 0; b < numBoards; b++) 
 			pthread_mutex_unlock(&(boardWorkerData[b]->done_signal));
 }
 
-void AsierInhoImpl_V2::readBoardParameters(int boardId, float* matToWorld, float* transducerPositions, int* transducerIds, int* phaseAdjust, float* amplitudeAdjust, int* numDiscreteLevels, worker_threadData* thread_data) {
+void AsierInhoImpl_V2::readBoardParameters(int boardId, float* matToWorld, float* transducerPositions, float* transducerNormals, int* transducerIds, int* phaseAdjust, float* amplitudeAdjust, int* numDiscreteLevels, worker_threadData* thread_data) {
 	BoardConfig boardConfig= ParseBoardConfig::readParameters(boardId);
 	thread_data->boardSN = new char[strlen(boardConfig.hardwareID) +1];
 	strcpy_s(thread_data->boardSN, strlen(boardConfig.hardwareID) + 1, boardConfig.hardwareID);
@@ -208,7 +210,12 @@ void AsierInhoImpl_V2::readBoardParameters(int boardId, float* matToWorld, float
 							 pLocal[0]*matToWorld[4] + pLocal[1]*matToWorld[5] + pLocal[2]*matToWorld[6] + matToWorld[7],
 							 pLocal[0]*matToWorld[8] + pLocal[1]*matToWorld[9] + pLocal[2]*matToWorld[10] + matToWorld[11],};
 		memcpy(&(transducerPositions[3 * t]), posWorld, 3 * sizeof(float));
-	}	
+		float nLocal[3] = { 0, 0, 1.f };
+		float normWorld[3] = { nLocal[0] * matToWorld[0] + nLocal[1] * matToWorld[1] + nLocal[2] * matToWorld[2],
+							   nLocal[0] * matToWorld[4] + nLocal[1] * matToWorld[5] + nLocal[2] * matToWorld[6],
+							   nLocal[0] * matToWorld[8] + nLocal[1] * matToWorld[9] + nLocal[2] * matToWorld[10], };
+		memcpy(&(transducerNormals[3 * t]), normWorld, 3 * sizeof(float));
+	}
 	//2. Write transducer IDs:
 	memcpy(transducerIds, boardConfig.pinMapping, 256 * sizeof(int));
 	//3. Write Phase adjustments:
@@ -216,10 +223,6 @@ void AsierInhoImpl_V2::readBoardParameters(int boardId, float* matToWorld, float
 	//4. Write Amplitude adjustments:
 	memcpy(amplitudeAdjust, boardConfig.amplitudeAdjust, 256 * sizeof(float));
 
-}
-
-void readParameters(float* transducerPositions, int* transducerIds, int* phaseAdjust, float* amplitudeAdjust, int* numDiscreteLevels) {
-	;
 }
 
 // To achieve 10kHz, I need to use the FTD2XX driver. USBs are not recognised as a COM port any more...

@@ -259,6 +259,29 @@ bool AsierInhoImpl_V2::initFTDevice(FT_HANDLE& fthandle, char* serialNumber, boo
 	return true;
 }
 
+void AsierInhoImpl_V2::updateMessagePerBoard(unsigned char ** message)
+{
+	//0. Check status
+	if (status != AsierInhoState::CONNECTED )
+		return;
+	//Multithreaded version: 
+	//Wait for them to finish
+	for (int b = 0; b < numBoards; b++) {
+		pthread_mutex_lock(&(boardWorkerData[b]->done_signal));
+		boardWorkerData[b]->numMessagesToSend = 1;
+		boardWorkerData[b]->dataStream=&(dataStream[b*messageSize]);
+	}
+	
+	//Update the buffers:
+	for (int b = 0; b < numBoards; b++) {
+		memcpy(boardWorkerData[b]->dataStream, message[b], messageSize);
+	}
+	//Send signals to notify worker threads to update phases
+	for(int b=0; b<numBoards; b++)
+		pthread_mutex_unlock(&(boardWorkerData[b]->send_signal));
+
+}
+
 void AsierInhoImpl_V2::updateMessage(unsigned char* message) {
 	//0. Check status
 	if (status != AsierInhoState::CONNECTED )

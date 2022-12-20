@@ -41,6 +41,7 @@ protected:
 	int* transducerIds;// [256 * numBoards];
 	int* phaseAdjust;// [256 * numBoards];
 	float* transducerPositions;//[3*256 * numBoards]
+	float* transducerNormals;//[3*256 * numBoards]
 	float* amplitudeAdjust;
 	std::vector<char*> serialNumbers;// bottomSerialNumber, *topSerialNumber;
 	enum AsierInhoState { INIT = 0, CONNECTED };
@@ -57,7 +58,7 @@ public:
 	~AsierInhoImpl_V2();
 	virtual bool connect(int bottomBoardID, int topBoardID, int maxNumMessagesToSend );
 	virtual bool connect(int numBoards, int* boardIDs, float* matBoardToWorld4x4, int maxNumMessagesToSend );
-	virtual void readParameters(float* transducerPositions, int* transducerIds, int* phaseAdjust, float* amplitudeAdjust, int* numDiscreteLevels);
+	virtual void readParameters(float* transducerPositions, float* transducerNormals, int* transducerIds, int* phaseAdjust, float* amplitudeAdjust, int* numDiscreteLevels);
 	virtual size_t totalTransducers() { return totalBoards() * 256; };
 	virtual size_t totalBoards() { return numBoards; }
 	virtual void numTransducersPerBoard(size_t* out_TransPerBoard) {
@@ -78,7 +79,7 @@ public:
 
 protected:
 	
-	void readBoardParameters(int boardId, float* matToWorld, float* transducerPositions, int* transducerIds, int* phaseAdjust, float* amplitudeAdjust, int* numDiscreteLevels, worker_threadData* thread_data);
+	void readBoardParameters(int boardId, float* matToWorld, float* transducerPositions, float* transducerNormals, int* transducerIds, int* phaseAdjust, float* amplitudeAdjust, int* numDiscreteLevels, worker_threadData* thread_data);
 	bool initFTDevice(FT_HANDLE& fthandle, char* serialNumber, bool syncMode = false);
 
 };

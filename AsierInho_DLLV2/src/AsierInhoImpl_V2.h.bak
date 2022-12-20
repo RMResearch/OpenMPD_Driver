@@ -41,6 +41,7 @@ protected:
 	int* transducerIds;// [256 * numBoards];
 	int* phaseAdjust;// [256 * numBoards];
 	float* transducerPositions;//[3*256 * numBoards]
+	float* transducerNormals;//[3*256 * numBoards]
 	float* amplitudeAdjust;
 	std::vector<char*> serialNumbers;// bottomSerialNumber, *topSerialNumber;
 	enum AsierInhoState { INIT = 0, CONNECTED };
@@ -57,8 +58,15 @@ public:
 	~AsierInhoImpl_V2();
 	virtual bool connect(int bottomBoardID, int topBoardID, int maxNumMessagesToSend );
 	virtual bool connect(int numBoards, int* boardIDs, float* matBoardToWorld4x4, int maxNumMessagesToSend );
-	virtual void readParameters(float* transducerPositions, int* transducerIds, int* phaseAdjust, float* amplitudeAdjust, int* numDiscreteLevels);
+	virtual void readParameters(float* transducerPositions, float* transducerNormals, int* transducerIds, int* phaseAdjust, float* amplitudeAdjust, int* numDiscreteLevels);
+	virtual size_t totalTransducers() { return totalBoards() * 256; };
+	virtual size_t totalBoards() { return numBoards; }
+	virtual void numTransducersPerBoard(size_t* out_TransPerBoard) {
+		for (int b = 0; b < numBoards; b++)
+			out_TransPerBoard[b] = 256;
+	}
 	virtual void updateBoardPositions(float*matBoardToWorld4x4);	
+	virtual void updateMessagePerBoard(unsigned char** message) ;
 	virtual void updateMessage(unsigned char* messages);
 	virtual void updateMessages(unsigned char* messages, int numMessagesToSend);
 	virtual void turnTransducersOn();

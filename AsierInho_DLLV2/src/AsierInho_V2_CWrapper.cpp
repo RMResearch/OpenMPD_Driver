@@ -40,8 +40,8 @@ void AsierInho_CWrapper_destroyHandler(AsierInho_V2_Handler h) {
 }
 
 
-void AsierInho_CWrapper_readParameters(AsierInho_V2_Handler h, float* transducerPositions, int* transducerIds, int* phaseAdjust, float* amplitudeAdjust, int* numDiscreteLevels){
-	((AsierInho_V2::AsierInhoBoard_V2*)h)->readParameters(transducerPositions, transducerIds, phaseAdjust, amplitudeAdjust, numDiscreteLevels);
+void AsierInho_CWrapper_readParameters(AsierInho_V2_Handler h, float* transducerPositions, float* transducerNormals, int* transducerIds, int* phaseAdjust, float* amplitudeAdjust, int* numDiscreteLevels){
+	((AsierInho_V2::AsierInhoBoard_V2*)h)->readParameters(transducerPositions, transducerNormals, transducerIds, phaseAdjust, amplitudeAdjust, numDiscreteLevels);
 }
 
 _AsierInho_Export_V2 size_t AsierInho_CWrapper_totalTransducers(AsierInho_V2_Handler h)

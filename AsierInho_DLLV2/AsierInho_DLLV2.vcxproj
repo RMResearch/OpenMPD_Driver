@@ -10,7 +10,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{AA1F4D85-46A4-4426-801E-21840AD7D4A4}</ProjectGuid>
     <RootNamespace>AsierInho_DLL</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <ProjectName>AsierInho_V2</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
